@@ -5,10 +5,10 @@
 
 struct BSTNode {
     BSTEntry entry;
-    BSTNode* left;
-    BSTNode* right;
+    BSTNode* left; // Lewe dziecko
+    BSTNode* right; // Prawe dziecko
 
-    BSTNode(int k, int v) : entry{k, v}, left(nullptr), right(nullptr) {}
+    BSTNode(uint32_t key, uint32_t value) : entry{key, value}, left(nullptr), right(nullptr) {}
 };
 
 #endif

@@ -3,27 +3,26 @@
 
 #include "HashTable.hpp"
 
-#include <iostream>
 #include <cmath>
-#include <cstdlib>
-
 
 class CuckooHashingTable : public HashTable {
 public:
-    CuckooHashingTable(int initialCapacity);
+    CuckooHashingTable(int initialCapacity = 10);
+    CuckooHashingTable(const CuckooHashingTable& other);
     ~CuckooHashingTable();
-    void insert(int key, int value) override;
-    bool remove(int key) override;
-    int search(int key) const override;
+    
+    void insert(uint32_t key, uint32_t value) override;
+    bool remove(uint32_t key) override;
+    uint32_t search(uint32_t key) const override;
 
-protected:
-    void rehash() override;
-    int hash(int key, int attempt) const override;
+    void print() const override;
 
 private:
-    Entry* table2;
+    Entry* table2; // Druga tablica, do ktorej zapisywany jest element gdy kubelek w pierwszej jest zajety
+    void rehash() override;
     void rehash(int newCapacity);
-    void swap(int& key1, int& value1, int& key2, int& value2);
+    int hash(uint32_t key, int attempt) const override;
+    void swap(uint32_t& key1, uint32_t& value1, uint32_t& key2, uint32_t& value2); // Metoda zamieniajaca ze soba dwie pary klucz-wartosc
 };
 
 #endif

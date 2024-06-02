@@ -1,29 +1,33 @@
 #include <iostream>
+
 #include "headers/OpenAddressingTable.hpp"
+#include "headers/ClosedAddressingTable.hpp"
 #include "headers/CuckooHashingTable.hpp"
+
 #include "headers/Timer.hpp"
+#include "measure.hpp"
+#include "generate_data.hpp"
 
 int main() {
-    // Test Open Addressing Table
-    // Test Cuckoo Hashing Table
-    std::cout << "\nOA Hashing Table Test:" << std::endl;
-    OpenAddressingTable oaHashingTable(5);
-
-    // Insert elements until the table is about to overflow
-    for (int i = 0; i < 10; ++i) {
-        oaHashingTable.insert(i, i * 100);
+    int seeds[5]; 
+    for (int i = 0; i < 5; i++) {
+        seeds[i] = rand();
     }
+    uint32_t value[5]; 
+    uint32_t key[5];
+    for (int i = 0; i < 5; i++) {
+        std::mt19937 gen(seeds[i]);
+        value[i] = generateRandomNumberFromSeed(gen);
+        key[i] =  generateRandomNumberFromSeed(gen);
+        std::cout << std::endl << i+1 << ". Seed: " << seeds[i] << std::endl << "Wartosc: "  << value[i] << "," << std::endl << "Klucz: " << key[i] << std::endl;
+    }
+    int dataSetSize[9] = {1000, 5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000};
+    measureAndSave("CUCKOO_INSERT", CUCKOO, INSERT, 9, dataSetSize, 5, seeds, 100, value, key);
+    measureAndSave("CUCKOO_REMOVE", CUCKOO, REMOVE, 9, dataSetSize, 5, seeds, 100, value, key);
+    measureAndSave("OPEN_INSERT", OPEN, INSERT, 9, dataSetSize, 5, seeds, 100, value, key);
+    measureAndSave("OPEN_REMOVE", OPEN, REMOVE, 9, dataSetSize, 5, seeds, 100, value, key);
+    measureAndSave("CLOSED_INSERT", CLOSED, INSERT, 9, dataSetSize, 5, seeds, 100, value, key);
+    measureAndSave("CLOSED_REMOVE", CLOSED, REMOVE, 9, dataSetSize, 5, seeds, 100, value, key);
 
-    
-    Timer timer1;
-    oaHashingTable.insert(777, 10);
-    int insTime = timer1.elapsed();
-    std::cout << "Search: " << oaHashingTable.search(777) << std::endl;
-    Timer timer2;
-    oaHashingTable.remove(777);
-    int removeTime = timer2.elapsed();
-    std::cout << "Search: " << oaHashingTable.search(777) << std::endl;
-    std::cout << "InsTime: " << insTime << " Remove time: " << removeTime << " Load factor: " << oaHashingTable.getLoadFactor() << std::endl;
-    std::cout << "Size: " << oaHashingTable.getSize() << ", capacity:  " << oaHashingTable.getCapacity();
     return 0;
 }

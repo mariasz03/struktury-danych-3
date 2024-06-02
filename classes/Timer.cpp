@@ -1,4 +1,4 @@
-#include "..\headers\Timer.hpp" // Timer mierzaca czas
+#include "..\headers\Timer.hpp" // Klasa Timer mierzaca czas
 
 Timer::Timer() : start_time(std::chrono::high_resolution_clock::now()) {}
 
