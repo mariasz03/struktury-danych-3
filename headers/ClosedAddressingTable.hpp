@@ -17,7 +17,7 @@ public:
     
 private:
     int hash(uint32_t key) const;
-    void copyFrom(const ClosedAddressingTable& other); // Funkcja kopiujaca jedna tablice do drugiej
+    void copyFrom(const ClosedAddressingTable& other); // Metoda kopiujaca jedna tablice do drugiej
 
     int capacity;
     int size;

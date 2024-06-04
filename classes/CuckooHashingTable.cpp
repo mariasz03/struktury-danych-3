@@ -120,8 +120,9 @@ void CuckooHashingTable::rehash() {
 }
 
 void CuckooHashingTable::rehash(int newCapacity) {
+    // Inicjalizacja tablicy o nowym rozmiarze
     Entry* oldTable1 = table;
-    Entry* oldTable2 = table2;
+    Entry* oldTable2 = table2; 
     int oldCapacity = capacity;
 
     capacity = newCapacity;
@@ -134,7 +135,7 @@ void CuckooHashingTable::rehash(int newCapacity) {
     }
 
     size = 0;
-
+    // Wstawienie elementow do tablicy o nowym rozmiarze
     for (int i = 0; i < oldCapacity; ++i) {
         if (oldTable1[i].occupied) {
             insert(oldTable1[i].key, oldTable1[i].value);
@@ -149,6 +150,7 @@ void CuckooHashingTable::rehash(int newCapacity) {
 }
 
 int CuckooHashingTable::hash(uint32_t key, int attempt) const {
+    // Funkcja mieszajaca dla jednej i drugiej tablicy
     if (attempt % 2 == 0) {
         return key % capacity;
     } else {
