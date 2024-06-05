@@ -9,6 +9,7 @@ class CuckooHashingTable : public HashTable {
 public:
     CuckooHashingTable(int initialCapacity = 10);
     CuckooHashingTable(const CuckooHashingTable& other);
+    CuckooHashingTable& operator=(const CuckooHashingTable& other);
     ~CuckooHashingTable();
     
     void insert(uint32_t key, uint32_t value) override;

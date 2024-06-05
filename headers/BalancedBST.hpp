@@ -28,6 +28,13 @@ private:
     BSTNode* copyTree(BSTNode* node); // Metoda kopiujaca drzewo
     void print(BSTNode* node) const; // Funkcja pomocnicza do wypisywania elementow drzewa
     BSTNode* findMin(BSTNode* node) const; // Funkcja znajdujaca element o najmniejszym kluczu
+
+    // Funkcje pomocnicze dla AVL
+    int height(BSTNode* node) const; // Funkcja zwracająca wysokość
+    int balanceFactor(BSTNode* node) const; // Funkcja obliczająca współczynnik balansu
+    BSTNode* rotateLeft(BSTNode* node); // Funkcja wykonująca rotację w lewo
+    BSTNode* rotateRight(BSTNode* node); // Funkcja wykonująca rotację w prawo
+    BSTNode* balance(BSTNode* node); // Funkcja balansująca drzewo
 };
 
 #endif

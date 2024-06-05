@@ -1,7 +1,7 @@
 #include "../headers/OpenAddressingTable.hpp"
 
 void OpenAddressingTable::insert(uint32_t key, uint32_t value) {
-    if (size >= capacity * 0.5) { // Jezeli loadfactor przekroczy 0.5, tablica jest rehashowana
+    if (size >= capacity * 0.7) { // Jezeli loadfactor przekroczy 0.7, tablica jest rehashowana
         rehash();
     }
     int attempt = 0; // Licznik prob wstawienia elementu do kubelka

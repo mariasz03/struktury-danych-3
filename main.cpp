@@ -117,13 +117,13 @@ int main() {
                     std::cout << std::endl << i+1 << ". Seed: " << seeds[i] << std::endl << "wartosc: "  << value[i] << "," << std::endl << "klucz: " << key[i] << std::endl;
                 }
                 // Punkty pomiarowe - zestawy danych o roznej wielkosci do pomiaru. Dla kazdego seedu 9 roznych wielkosci danych
-                int dataSetSize[9] = {1000, 5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000};
-                measureAndSave("CUCKOO_INSERT", CUCKOO, INSERT, 9, dataSetSize, 5, seeds, 100, value, key);
-                measureAndSave("CUCKOO_REMOVE", CUCKOO, REMOVE, 9, dataSetSize, 5, seeds, 100, value, key);
-                measureAndSave("OPEN_INSERT", OPEN, INSERT, 9, dataSetSize, 5, seeds, 100, value, key);
-                measureAndSave("OPEN_REMOVE", OPEN, REMOVE, 9, dataSetSize, 5, seeds, 100, value, key);
-                measureAndSave("CLOSED_INSERT", CLOSED, INSERT, 9, dataSetSize, 5, seeds, 100, value, key);
-                measureAndSave("CLOSED_REMOVE", CLOSED, REMOVE, 9, dataSetSize, 5, seeds, 100, value, key);
+                int dataSetSize[10] = {5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000};//1000, 5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000};
+                measureAndSave("OPEN_INSERT", OPEN, INSERT, 10, dataSetSize, 5, seeds, 100, value, key);
+                measureAndSave("OPEN_REMOVE", OPEN, REMOVE, 10, dataSetSize, 5, seeds, 100, value, key);
+                measureAndSave("CLOSED_INSERT", CLOSED, INSERT, 10, dataSetSize, 5, seeds, 100, value, key);
+                measureAndSave("CLOSED_REMOVE", CLOSED, REMOVE, 10, dataSetSize, 5, seeds, 100, value, key);
+                measureAndSave("CUCKOO_INSERT", CUCKOO, INSERT, 10, dataSetSize, 5, seeds, 100, value, key);
+                measureAndSave("CUCKOO_REMOVE", CUCKOO, REMOVE, 10, dataSetSize, 5, seeds, 100, value, key);
                 std::cout << "Pomiary zostaly wykonane i zapisane w pliku.";
                 break;
             }

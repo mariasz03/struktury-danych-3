@@ -24,6 +24,26 @@ CuckooHashingTable::CuckooHashingTable(const CuckooHashingTable& other) : HashTa
     }
 }
 
+CuckooHashingTable& CuckooHashingTable::operator=(const CuckooHashingTable& other) {
+    if (this == &other) return *this;
+
+    delete[] table;
+    delete[] table2;
+
+    capacity = other.capacity;
+    size = other.size;
+    table = new Entry[capacity];
+    for (int i = 0; i < capacity; ++i) {
+        table[i] = other.table[i];
+    }
+    table2 = new Entry[capacity];
+    for (int i = 0; i < capacity; ++i) {
+        table2[i] = other.table2[i];
+    }
+
+    return *this;
+}
+
 void CuckooHashingTable::insert(uint32_t key, uint32_t value) {
     // Sprawdzenie, czy konieczne jest rehashowanie (loadfactor >= 0.5)
     if (size >= capacity * 0.5) {

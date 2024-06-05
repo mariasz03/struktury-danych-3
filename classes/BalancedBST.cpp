@@ -1,15 +1,15 @@
 #include "../headers/BalancedBST.hpp"
 
-BalancedBST::BalancedBST() : root(nullptr) {};
+BalancedBST::BalancedBST() : root(nullptr) {}
 
 BalancedBST::~BalancedBST() {
     destroyTree(root);
 }
 
 BalancedBST& BalancedBST::operator=(const BalancedBST& other) {
-    if (this != &other) { // Unkniecie przypisania samego siebie
-        destroyTree(root); // Usuniecie obecnego drzewa
-        root = copyTree(other.root); // Skopiowanie drugiego drzewa
+    if (this != &other) {
+        destroyTree(root);
+        root = copyTree(other.root);
     }
     return *this;
 }
@@ -34,8 +34,6 @@ void BalancedBST::print() const {
     print(root);
 }
 
-// Metody pomocnicze
-
 // Rekurencyjna metoda wstawiania
 BSTNode* BalancedBST::insert(BSTNode* node, uint32_t key, uint32_t value, bool& inserted) {
     if (node == nullptr) { // Jezeli obecny wezel jest nie istnieje, stworzenie nowy
@@ -50,8 +48,9 @@ BSTNode* BalancedBST::insert(BSTNode* node, uint32_t key, uint32_t value, bool& 
         node->entry.value = value; // Aktualizacja wartosci
         inserted = false;
     }
-    return node;
+    return balance(node); // Balansowanie drzewa po wstawieniu
 }
+
 // Rekurencyjna metoda usuwania
 BSTNode* BalancedBST::remove(BSTNode* node, uint32_t key, bool &removed) {
     if (node == nullptr) { // Jezeli obecny wezel nie istnieje, zwraca null
@@ -77,8 +76,9 @@ BSTNode* BalancedBST::remove(BSTNode* node, uint32_t key, bool &removed) {
         node->entry.value = temp->entry.value;
         node->right = remove(node->right, temp->entry.key, removed);
     }
-    return node;
+    return balance(node); // Balansowanie drzewa po usunięciu
 }
+
 // Rekurencyjna metoda wyszukiwania
 uint32_t BalancedBST::search(BSTNode* node, uint32_t key) const {
     if (node == nullptr) {
@@ -92,15 +92,17 @@ uint32_t BalancedBST::search(BSTNode* node, uint32_t key) const {
         return node->entry.value;
     }
 }
+
 // Rekurencyjne usuwanie wezlow poddrzew
-void BalancedBST::destroyTree(BSTNode* node) { 
+void BalancedBST::destroyTree(BSTNode* node) {
     if (node != nullptr) {
         destroyTree(node->left);
         destroyTree(node->right);
-        delete node; 
+        delete node;
     }
 }
-// Rekurenycjna metoda kopiowania drzew
+
+// Rekurencyjna metoda kopiowania drzew
 BSTNode* BalancedBST::copyTree(BSTNode* node) {
     if (node == nullptr) {
         return nullptr;
@@ -110,18 +112,66 @@ BSTNode* BalancedBST::copyTree(BSTNode* node) {
     newNode->right = copyTree(node->right);
     return newNode;
 }
+
 // Rekurencyjna metoda wyswietlania elementow
 void BalancedBST::print(BSTNode* node) const {
     if (node != nullptr) {
-        print(node->left); 
+        print(node->left);
         std::cout << "(" << node->entry.key << ", " << node->entry.value << ") " << std::endl;
         print(node->right);
     }
 }
+
 // Metoda znajdujaca wezel z minimalnum kluczem
 BSTNode* BalancedBST::findMin(BSTNode* node) const {
     while (node->left != nullptr) {
         node = node->left;
+    }
+    return node;
+}
+
+// Funkcje pomocnicze dla AVL
+int BalancedBST::height(BSTNode* node) const {
+    return node == nullptr ? 0 : node->height;
+}
+
+int BalancedBST::balanceFactor(BSTNode* node) const {
+    return node == nullptr ? 0 : height(node->left) - height(node->right);
+}
+
+BSTNode* BalancedBST::rotateLeft(BSTNode* node) {
+    BSTNode* newRoot = node->right;
+    node->right = newRoot->left;
+    newRoot->left = node;
+    node->height = std::max(height(node->left), height(node->right)) + 1;
+    newRoot->height = std::max(height(newRoot->left), height(newRoot->right)) + 1;
+    return newRoot;
+}
+
+BSTNode* BalancedBST::rotateRight(BSTNode* node) {
+    BSTNode* newRoot = node->left;
+    node->left = newRoot->right;
+    newRoot->right = node;
+    node->height = std::max(height(node->left), height(node->right)) + 1;
+    newRoot->height = std::max(height(newRoot->left), height(newRoot->right)) + 1;
+    return newRoot;
+}
+
+BSTNode* BalancedBST::balance(BSTNode* node) {
+    node->height = std::max(height(node->left), height(node->right)) + 1;
+    int balance = balanceFactor(node);
+
+    if (balance > 1) {
+        if (balanceFactor(node->left) < 0) {
+            node->left = rotateLeft(node->left);
+        }
+        return rotateRight(node);
+    }
+    if (balance < -1) {
+        if (balanceFactor(node->right) > 0) {
+            node->right = rotateRight(node->right);
+        }
+        return rotateLeft(node);
     }
     return node;
 }
